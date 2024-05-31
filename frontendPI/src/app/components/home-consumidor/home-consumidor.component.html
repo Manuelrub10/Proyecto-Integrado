@@ -1,0 +1,51 @@
+<app-menu-consumidor></app-menu-consumidor>
+<br><br>
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Actividades Disponibles</h2>
+
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Título</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Lugar</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Máximo de Participantes</th>
+                    <th scope="col">Mínimo de Participantes</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let actividad of actividades">
+                    <td>{{ actividad.titulo }}</td>
+                    <td>{{ actividad.descripcion }}</td>
+                    <td>{{ actividad.fecha }}</td>
+                    <td>{{ actividad.lugar }}</td>
+                    <td>{{ actividad.tipo }}</td>
+                    <td>{{ actividad.numMaxParticipantes }}</td>
+                    <td>{{ actividad.numMinParticipantes }}</td>
+                    <td>
+                        <button class="btn btn-primary" (click)="reservarActividad(actividad.id)">Reservar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <nav class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" [class.disabled]="page === 0">
+                <button class="page-link" (click)="cambiarPagina(page - 1)" [disabled]="page === 0">Anterior</button>
+            </li>
+            <li *ngFor="let i of [].constructor(totalPages); let idx = index" class="page-item"
+                [class.active]="page === idx">
+                <button class="page-link" (click)="cambiarPagina(idx)">{{ idx + 1 }}</button>
+            </li>
+            <li class="page-item" [class.disabled]="page === totalPages - 1">
+                <button class="page-link" (click)="cambiarPagina(page + 1)"
+                    [disabled]="page === totalPages - 1">Siguiente</button>
+            </li>
+        </ul>
+    </nav>
+</div>

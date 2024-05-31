@@ -1,0 +1,8 @@
+.custom-bg {
+  background-color: #becdff; /* Color azul */
+  padding: 20px;
+  min-height: 100vh; /* Altura mínima de 100% del viewport */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

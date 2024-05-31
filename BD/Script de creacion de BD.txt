@@ -1,0 +1,213 @@
+-- Crear tablas
+
+create table usuario
+(
+    id        bigint auto_increment
+        primary key,
+    apellido  varchar(255) null,
+    direccion varchar(255) null,
+    email     varchar(255) null,
+    nombre    varchar(255) null,
+    password  varchar(255) null,
+    telefono  varchar(255) null
+);
+
+create table consumidor
+(
+    id         bigint auto_increment
+        primary key,
+    usuario_id bigint       null,
+    apellidos  varchar(255) null,
+    direccion  varchar(255) null,
+    nombre     varchar(255) null,
+    telefono   varchar(255) null,
+    constraint UK_fn521vf38xnn3pdhwfbnpsq1t
+        unique (usuario_id),
+    constraint FKivy2e7onhhn37mccld55suwvx
+        foreign key (usuario_id) references usuario (id)
+);
+
+create table ofertante
+(
+    id          bigint auto_increment
+        primary key,
+    usuario_id  bigint       null,
+    apellidos   varchar(255) null,
+    descripcion varchar(255) null,
+    direccion   varchar(255) null,
+    nombre      varchar(255) null,
+    telefono    varchar(255) null,
+    constraint UK_rb8nmuouvle7vp5qqa1s3p40c
+        unique (usuario_id),
+    constraint FKpd7s2qefemnsi6qqbjv52p9wq
+        foreign key (usuario_id) references usuario (id)
+);
+
+create table actividad
+(
+    duracion              int          not null,
+    num_max_participantes int          not null,
+    num_min_participantes int          not null,
+    fecha                 datetime(6)  null,
+    id                    bigint auto_increment
+        primary key,
+    ofertante_id          bigint       null,
+    descripcion           varchar(255) null,
+    lugar                 varchar(255) null,
+    material_necesario    varchar(255) null,
+    material_ofrecido     varchar(255) null,
+    tipo                  varchar(255) null,
+    titulo                varchar(255) null,
+    constraint FKoyrg45al6xsrp7wpjj0bjduew
+        foreign key (ofertante_id) references ofertante (id)
+);
+
+create table reserva
+(
+    actividad_id  bigint      null,
+    consumidor_id bigint      null,
+    fecha_reserva datetime(6) null,
+    id            bigint auto_increment
+        primary key,
+    constraint FKdw7na7h70828vbm8ms35knqqy
+        foreign key (consumidor_id) references consumidor (id),
+    constraint FKnldy4amxkkptwno1saohc0sgo
+        foreign key (actividad_id) references actividad (id)
+);
+
+
+
+
+-- Insertar datos de prueba
+
+-- Insertar datos en la tabla usuario
+INSERT INTO usuario (apellido, direccion, email, nombre, password, telefono) VALUES
+                                                                                 ('García', 'Calle Falsa 123', 'juan.garcia@example.com', 'Juan', 'password123', '123456789'),
+                                                                                 ('Pérez', 'Avenida Siempre Viva 456', 'maria.perez@example.com', 'Maria', 'password456', '987654321'),
+                                                                                 ('López', 'Calle Luna 789', 'carlos.lopez@example.com', 'Carlos', 'password789', '555666777'),
+                                                                                 ('Martínez', 'Calle Sol 321', 'ana.martinez@example.com', 'Ana', 'password321', '333444555'),
+                                                                                 ('Rodríguez', 'Avenida Libertad 654', 'luis.rodriguez@example.com', 'Luis', 'password654', '666777888'),
+                                                                                 ('Gómez', 'Calle Flores 987', 'laura.gomez@example.com', 'Laura', 'password987', '999000111'),
+                                                                                 ('Fernández', 'Calle Nieve 147', 'jose.fernandez@example.com', 'Jose', 'password147', '222333444'),
+                                                                                 ('Sánchez', 'Avenida Central 258', 'carla.sanchez@example.com', 'Carla', 'password258', '555666777'),
+                                                                                 ('Ramírez', 'Calle Estrella 369', 'pedro.ramirez@example.com', 'Pedro', 'password369', '888999000'),
+                                                                                 ('Torres', 'Avenida Sol 753', 'antonio.torres@example.com', 'Antonio', 'password753', '111222333'),
+                                                                                 ('Flores', 'Calle Mar 159', 'lucia.flores@example.com', 'Lucia', 'password159', '444555666'),
+                                                                                 ('Rivera', 'Avenida Río 951', 'david.rivera@example.com', 'David', 'password951', '777888999'),
+                                                                                 ('Ruiz', 'Calle Luna 123', 'marta.ruiz@example.com', 'Marta', 'password1234', '123123123'),
+                                                                                 ('Ortiz', 'Avenida Siempre Viva 456', 'sandra.ortiz@example.com', 'Sandra', 'password4567', '456456456'),
+                                                                                 ('Morales', 'Calle Falsa 789', 'jorge.morales@example.com', 'Jorge', 'password7890', '789789789'),
+                                                                                 ('Vargas', 'Avenida Libertad 123', 'julia.vargas@example.com', 'Julia', 'password0123', '012012012'),
+                                                                                 ('Castro', 'Calle Sol 456', 'manuel.castro@example.com', 'Manuel', 'password3456', '345345345'),
+                                                                                 ('Mendoza', 'Avenida Central 789', 'elena.mendoza@example.com', 'Elena', 'password6789', '678678678'),
+                                                                                 ('Guerrero', 'Calle Flores 147', 'santiago.guerrero@example.com', 'Santiago', 'password1111', '111111111'),
+                                                                                 ('Medina', 'Avenida Nieve 258', 'rafael.medina@example.com', 'Rafael', 'password2222', '222222222');
+
+-- Insertar datos en la tabla consumidor
+INSERT INTO consumidor (usuario_id, apellidos, direccion, nombre, telefono) VALUES
+                                                                                (1, 'García', 'Calle Falsa 123', 'Juan', '123456789'),
+                                                                                (2, 'Pérez', 'Avenida Siempre Viva 456', 'Maria', '987654321'),
+                                                                                (3, 'López', 'Calle Luna 789', 'Carlos', '555666777'),
+                                                                                (4, 'Martínez', 'Calle Sol 321', 'Ana', '333444555'),
+                                                                                (5, 'Rodríguez', 'Avenida Libertad 654', 'Luis', '666777888'),
+                                                                                (6, 'Gómez', 'Calle Flores 987', 'Laura', '999000111'),
+                                                                                (7, 'Fernández', 'Calle Nieve 147', 'Jose', '222333444'),
+                                                                                (8, 'Sánchez', 'Avenida Central 258', 'Carla', '555666777'),
+                                                                                (9, 'Ramírez', 'Calle Estrella 369', 'Pedro', '888999000'),
+                                                                                (10, 'Torres', 'Avenida Sol 753', 'Antonio', '111222333'),
+                                                                                (11, 'Flores', 'Calle Mar 159', 'Lucia', '444555666'),
+                                                                                (12, 'Rivera', 'Avenida Río 951', 'David', '777888999'),
+                                                                                (13, 'Ruiz', 'Calle Luna 123', 'Marta', '123123123'),
+                                                                                (14, 'Ortiz', 'Avenida Siempre Viva 456', 'Sandra', '456456456'),
+                                                                                (15, 'Morales', 'Calle Falsa 789', 'Jorge', '789789789'),
+                                                                                (16, 'Vargas', 'Avenida Libertad 123', 'Julia', '012012012'),
+                                                                                (17, 'Castro', 'Calle Sol 456', 'Manuel', '345345345'),
+                                                                                (18, 'Mendoza', 'Avenida Central 789', 'Elena', '678678678'),
+                                                                                (19, 'Guerrero', 'Calle Flores 147', 'Santiago', '111111111'),
+                                                                                (20, 'Medina', 'Avenida Nieve 258', 'Rafael', '222222222');
+
+-- Insertar datos en la tabla ofertante
+INSERT INTO ofertante (usuario_id, apellidos, descripcion, direccion, nombre, telefono) VALUES
+                                                                                            (1, 'García', 'Ofrece clases de guitarra', 'Calle Falsa 123', 'Juan', '123456789'),
+                                                                                            (2, 'Pérez', 'Ofrece clases de piano', 'Avenida Siempre Viva 456', 'Maria', '987654321'),
+                                                                                            (3, 'López', 'Ofrece clases de música', 'Calle Luna 789', 'Carlos', '555666777'),
+                                                                                            (4, 'Martínez', 'Ofrece clases de pintura', 'Calle Sol 321', 'Ana', '333444555'),
+                                                                                            (5, 'Rodríguez', 'Ofrece clases de cocina', 'Avenida Libertad 654', 'Luis', '666777888'),
+                                                                                            (6, 'Gómez', 'Ofrece clases de baile', 'Calle Flores 987', 'Laura', '999000111'),
+                                                                                            (7, 'Fernández', 'Ofrece clases de fotografía', 'Calle Nieve 147', 'Jose', '222333444'),
+                                                                                            (8, 'Sánchez', 'Ofrece clases de yoga', 'Avenida Central 258', 'Carla', '555666777'),
+                                                                                            (9, 'Ramírez', 'Ofrece clases de jardinería', 'Calle Estrella 369', 'Pedro', '888999000'),
+                                                                                            (10, 'Torres', 'Ofrece clases de cerámica', 'Avenida Sol 753', 'Antonio', '111222333'),
+                                                                                            (11, 'Flores', 'Ofrece clases de teatro', 'Calle Mar 159', 'Lucia', '444555666'),
+                                                                                            (12, 'Rivera', 'Ofrece clases de canto', 'Avenida Río 951', 'David', '777888999'),
+                                                                                            (13, 'Ruiz', 'Ofrece clases de idiomas', 'Calle Luna 123', 'Marta', '123123123'),
+                                                                                            (14, 'Ortiz', 'Ofrece clases de dibujo', 'Avenida Siempre Viva 456', 'Sandra', '456456456'),
+                                                                                            (15, 'Morales', 'Ofrece clases de escultura', 'Calle Falsa 789', 'Jorge', '789789789'),
+                                                                                            (16, 'Vargas', 'Ofrece clases de costura', 'Avenida Libertad 123', 'Julia', '012012012'),
+                                                                                            (17, 'Castro', 'Ofrece clases de carpintería', 'Calle Sol 456', 'Manuel', '345345345'),
+                                                                                            (18, 'Mendoza', 'Ofrece clases de robótica', 'Avenida Central 789', 'Elena', '678678678'),
+                                                                                            (19, 'Guerrero', 'Ofrece clases de programación', 'Calle Flores 147', 'Santiago', '111111111'),
+                                                                                            (20, 'Medina', 'Ofrece clases de jardinería', 'Avenida Nieve 258', 'Rafael', '222222222');
+
+-- Insertar datos en la tabla actividad
+INSERT INTO actividad (duracion, num_max_participantes, num_min_participantes, fecha, ofertante_id, descripcion, lugar, material_necesario, material_ofrecido, tipo, titulo) VALUES
+                                                                                                                                                                                 (60, 10, 5, '2024-06-15 10:00:00', 1, 'Clase de guitarra para principiantes', 'Escuela de Música', 'Guitarra', 'Partituras', 'Educación', 'Clase de Guitarra'),
+                                                                                                                                                                                 (90, 12, 6, '2024-06-16 14:00:00', 2, 'Clase de piano avanzado', 'Conservatorio de Música', 'Piano', 'Partituras', 'Educación', 'Clase de Piano'),
+                                                                                                                                                                                 (120, 8, 4, '2024-06-17 16:00:00', 3, 'Clase de canto coral', 'Academia de Música', 'Voz', 'Cancionero', 'Educación', 'Clase de Canto Coral'),
+                                                                                                                                                                                 (45, 15, 5, '2024-06-18 09:00:00', 4, 'Clase de pintura al óleo', 'Taller de Arte', 'Pinceles y óleo', 'Lienzo', 'Arte', 'Clase de Pintura'),
+                                                                                                                                                                                 (60, 10, 5, '2024-06-19 11:00:00', 5, 'Clase de cocina internacional', 'Escuela de Cocina', 'Ingredientes', 'Recetario', 'Gastronomía', 'Clase de Cocina'),
+                                                                                                                                                                                 (75, 20, 10, '2024-06-20 13:00:00', 6, 'Clase de baile moderno', 'Estudio de Danza', 'Ropa cómoda', 'Coreografía', 'Baile', 'Clase de Baile'),
+                                                                                                                                                                                 (60, 15, 5, '2024-06-21 15:00:00', 7, 'Clase de fotografía digital', 'Estudio Fotográfico', 'Cámara', 'Manual', 'Fotografía', 'Clase de Fotografía'),
+                                                                                                                                                                                 (45, 12, 4, '2024-06-22 17:00:00', 8, 'Clase de yoga para principiantes', 'Centro de Yoga', 'Esterilla', 'Guía', 'Salud', 'Clase de Yoga'),
+                                                                                                                                                                                 (90, 18, 6, '2024-06-23 19:00:00', 9, 'Clase de jardinería urbana', 'Jardín Botánico', 'Guantes y palas', 'Plantas', 'Naturaleza', 'Clase de Jardinería'),
+                                                                                                                                                                                 (60, 10, 5, '2024-06-24 08:00:00', 10, 'Clase de cerámica avanzada', 'Taller de Cerámica', 'Barro', 'Esmaltes', 'Arte', 'Clase de Cerámica'),
+                                                                                                                                                                                 (120, 16, 8, '2024-06-25 10:00:00', 11, 'Clase de teatro para adultos', 'Teatro Principal', 'Ropa cómoda', 'Guión', 'Arte', 'Clase de Teatro'),
+                                                                                                                                                                                 (60, 12, 6, '2024-06-26 14:00:00', 12, 'Clase de canto individual', 'Estudio de Canto', 'Voz', 'Cancionero', 'Educación', 'Clase de Canto'),
+                                                                                                                                                                                 (75, 10, 5, '2024-06-27 16:00:00', 13, 'Clase de idiomas para viajeros', 'Academia de Idiomas', 'Libros', 'Apuntes', 'Educación', 'Clase de Idiomas'),
+                                                                                                                                                                                 (60, 15, 5, '2024-06-28 18:00:00', 14, 'Clase de dibujo técnico', 'Escuela de Arte', 'Lápices y reglas', 'Cuaderno', 'Arte', 'Clase de Dibujo'),
+                                                                                                                                                                                 (90, 10, 5, '2024-06-29 20:00:00', 15, 'Clase de escultura contemporánea', 'Taller de Escultura', 'Arcilla', 'Esmaltes', 'Arte', 'Clase de Escultura'),
+                                                                                                                                                                                 (60, 12, 6, '2024-06-30 09:00:00', 16, 'Clase de costura creativa', 'Academia de Costura', 'Hilos y agujas', 'Patrones', 'Artesanía', 'Clase de Costura'),
+                                                                                                                                                                                 (120, 14, 7, '2024-07-01 11:00:00', 17, 'Clase de carpintería básica', 'Taller de Carpintería', 'Madera y herramientas', 'Manual', 'Artesanía', 'Clase de Carpintería'),
+                                                                                                                                                                                 (60, 15, 5, '2024-07-02 13:00:00', 18, 'Clase de robótica para niños', 'Centro de Tecnología', 'Kit de robótica', 'Guía', 'Tecnología', 'Clase de Robótica'),
+                                                                                                                                                                                 (75, 10, 5, '2024-07-03 15:00:00', 19, 'Clase de programación básica', 'Academia de Programación', 'Computadora', 'Manual', 'Tecnología', 'Clase de Programación'),
+                                                                                                                                                                                 (60, 20, 10, '2024-07-04 17:00:00', 20, 'Clase de jardinería avanzada', 'Jardín Botánico', 'Guantes y herramientas', 'Plantas', 'Naturaleza', 'Clase de Jardinería'),
+                                                                                                                                                                                 (90, 15, 5, '2024-07-05 19:00:00', 1, 'Clase de guitarra intermedia', 'Escuela de Música', 'Guitarra', 'Partituras', 'Educación', 'Clase de Guitarra'),
+                                                                                                                                                                                 (120, 18, 9, '2024-07-06 08:00:00', 2, 'Clase de piano para niños', 'Conservatorio de Música', 'Piano', 'Partituras', 'Educación', 'Clase de Piano'),
+                                                                                                                                                                                 (60, 12, 6, '2024-07-07 10:00:00', 3, 'Clase de canto avanzado', 'Academia de Música', 'Voz', 'Cancionero', 'Educación', 'Clase de Canto'),
+                                                                                                                                                                                 (75, 15, 5, '2024-07-08 12:00:00', 4, 'Clase de pintura abstracta', 'Taller de Arte', 'Pinceles y acrílico', 'Lienzo', 'Arte', 'Clase de Pintura'),
+                                                                                                                                                                                 (90, 10, 5, '2024-07-09 14:00:00', 5, 'Clase de cocina saludable', 'Escuela de Cocina', 'Ingredientes', 'Recetario', 'Gastronomía', 'Clase de Cocina'),
+                                                                                                                                                                                 (60, 20, 10, '2024-07-10 16:00:00', 6, 'Clase de baile clásico', 'Estudio de Danza', 'Ropa cómoda', 'Coreografía', 'Baile', 'Clase de Baile'),
+                                                                                                                                                                                 (75, 12, 6, '2024-07-11 18:00:00', 7, 'Clase de fotografía analógica', 'Estudio Fotográfico', 'Cámara', 'Manual', 'Fotografía', 'Clase de Fotografía'),
+                                                                                                                                                                                 (45, 15, 5, '2024-07-12 20:00:00', 8, 'Clase de yoga avanzado', 'Centro de Yoga', 'Esterilla', 'Guía', 'Salud', 'Clase de Yoga'),
+                                                                                                                                                                                 (90, 10, 5, '2024-07-13 09:00:00', 9, 'Clase de jardinería vertical', 'Jardín Botánico', 'Guantes y palas', 'Plantas', 'Naturaleza', 'Clase de Jardinería'),
+                                                                                                                                                                                 (60, 15, 5, '2024-07-14 11:00:00', 10, 'Clase de cerámica para principiantes', 'Taller de Cerámica', 'Barro', 'Esmaltes', 'Arte', 'Clase de Cerámica'),
+                                                                                                                                                                                 (120, 20, 10, '2024-07-15 13:00:00', 11, 'Clase de teatro juvenil', 'Teatro Principal', 'Ropa cómoda', 'Guión', 'Arte', 'Clase de Teatro'),
+                                                                                                                                                                                 (60, 12, 6, '2024-07-16 15:00:00', 12, 'Clase de canto coral avanzado', 'Estudio de Canto', 'Voz', 'Cancionero', 'Educación', 'Clase de Canto'),
+                                                                                                                                                                                 (75, 15, 5, '2024-07-17 17:00:00', 13, 'Clase de idiomas para negocios', 'Academia de Idiomas', 'Libros', 'Apuntes', 'Educación', 'Clase de Idiomas'),
+                                                                                                                                                                                 (60, 10, 5, '2024-07-18 19:00:00', 14, 'Clase de dibujo artístico', 'Escuela de Arte', 'Lápices y acuarelas', 'Cuaderno', 'Arte', 'Clase de Dibujo'),
+                                                                                                                                                                                 (90, 18, 6, '2024-07-19 08:00:00', 15, 'Clase de escultura en madera', 'Taller de Escultura', 'Madera', 'Esmaltes', 'Arte', 'Clase de Escultura'),
+                                                                                                                                                                                 (60, 10, 5, '2024-07-20 10:00:00', 16, 'Clase de costura para principiantes', 'Academia de Costura', 'Hilos y agujas', 'Patrones', 'Artesanía', 'Clase de Costura');
+
+-- Insertar datos en la tabla reserva
+INSERT INTO reserva (actividad_id, consumidor_id, fecha_reserva) VALUES
+                                                                     (1, 1, '2024-05-28 09:00:00'),
+                                                                     (2, 2, '2024-05-28 09:30:00'),
+                                                                     (3, 3, '2024-05-28 10:00:00'),
+                                                                     (4, 4, '2024-05-28 10:30:00'),
+                                                                     (5, 5, '2024-05-28 11:00:00'),
+                                                                     (6, 6, '2024-05-28 11:30:00'),
+                                                                     (7, 7, '2024-05-28 12:00:00'),
+                                                                     (8, 8, '2024-05-28 12:30:00'),
+                                                                     (9, 9, '2024-05-28 13:00:00'),
+                                                                     (10, 10, '2024-05-28 13:30:00'),
+                                                                     (11, 11, '2024-06-04 08:00:00'),
+                                                                     (12, 12, '2024-06-05 10:00:00'),
+                                                                     (13, 13, '2024-06-06 12:00:00'),
+                                                                     (14, 14, '2024-06-07 14:00:00'),
+                                                                     (15, 15, '2024-06-08 16:00:00'),
+                                                                     (16, 16, '2024-06-09 18:00:00'),
+                                                                     (17, 17, '2024-06-10 20:00:00'),
+                                                                     (18, 18, '2024-06-11 09:00:00'),
+                                                                     (19, 19, '2024-06-12 11:00:00'),
+                                                                     (20, 20, '2024-06-13 13:00:00');
+

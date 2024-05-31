@@ -1,0 +1,11 @@
+<div class="container mt-5">
+    <h3>Gestionar Reservas</h3>
+    <div *ngIf="reservas.length === 0">No hay reservas para esta actividad.</div>
+    <div *ngFor="let reserva of reservas" class="card mt-3">
+        <div class="card-body">
+            <h5 class="card-title">{{ reserva.consumidor.nombre }} {{ reserva.consumidor.apellidos }}</h5>
+            <p class="card-text">{{ reserva.consumidor.email }}</p>
+            <button class="btn btn-danger float-end" (click)="cancelarReserva(reserva.id)">Cancelar Reserva</button>
+        </div>
+    </div>
+</div>

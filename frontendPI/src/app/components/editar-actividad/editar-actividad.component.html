@@ -1,0 +1,110 @@
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-center">Editar Actividad</h3>
+                </div>
+                <div class="card-body">
+                    <form (ngSubmit)="actualizarActividad()" #actividadForm="ngForm">
+                        <div class="form-group">
+                            <label for="titulo">Título</label>
+                            <input type="text" id="titulo" class="form-control" [(ngModel)]="actividad.titulo"
+                                name="titulo" required>
+                            <div *ngIf="actividadForm.controls['titulo']?.invalid && actividadForm.controls['titulo']?.touched"
+                                class="text-danger">
+                                El título es obligatorio.
+                            </div>
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="descripcion">Descripción</label>
+                            <input type="text" id="descripcion" class="form-control" [(ngModel)]="actividad.descripcion"
+                                name="descripcion" required>
+                            <div *ngIf="actividadForm.controls['descripcion']?.invalid && actividadForm.controls['descripcion']?.touched"
+                                class="text-danger">
+                                La descripción es obligatoria.
+                            </div>
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="duracion">Duración (minutos)</label>
+                            <input type="number" id="duracion" class="form-control" [(ngModel)]="actividad.duracion"
+                                name="duracion" required min="1">
+                            <div *ngIf="actividadForm.controls['duracion']?.invalid && actividadForm.controls['duracion']?.touched"
+                                class="text-danger">
+                                La duración debe ser un número positivo.
+                            </div>
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="numMaxParticipantes">Número Máximo de Participantes</label>
+                            <input type="number" id="numMaxParticipantes" class="form-control"
+                                [(ngModel)]="actividad.numMaxParticipantes" name="numMaxParticipantes" required min="1">
+                            <div *ngIf="actividadForm.controls['numMaxParticipantes']?.invalid && actividadForm.controls['numMaxParticipantes']?.touched"
+                                class="text-danger">
+                                El número máximo de participantes debe ser mayor o igual al número mínimo de
+                                participantes y positivo.
+                            </div>
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="numMinParticipantes">Número Mínimo de Participantes</label>
+                            <input type="number" id="numMinParticipantes" class="form-control"
+                                [(ngModel)]="actividad.numMinParticipantes" name="numMinParticipantes" required min="1">
+                            <div *ngIf="actividadForm.controls['numMinParticipantes']?.invalid && actividadForm.controls['numMinParticipantes']?.touched"
+                                class="text-danger">
+                                El número mínimo de participantes debe ser positivo.
+                            </div>
+                            <div *ngIf="actividadForm.controls['numMaxParticipantes'] && actividadForm.controls['numMinParticipantes'] && actividadForm.controls['numMaxParticipantes'].value < actividadForm.controls['numMinParticipantes'].value && actividadForm.controls['numMaxParticipantes'].touched && actividadForm.controls['numMinParticipantes'].touched"
+                                class="text-danger">
+                                El número máximo de participantes debe ser mayor o igual al número mínimo de
+                                participantes.
+                            </div>
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="fecha">Fecha y Hora</label>
+                            <input type="datetime-local" id="fecha" class="form-control" [(ngModel)]="actividad.fecha"
+                                name="fecha" required [min]="minDate">
+                            <div *ngIf="actividadForm.controls['fecha']?.invalid && actividadForm.controls['fecha']?.touched"
+                                class="text-danger">
+                                La fecha y hora son obligatorias y no puede ser una fecha pasada.
+                            </div>
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="lugar">Lugar</label>
+                            <input type="text" id="lugar" class="form-control" [(ngModel)]="actividad.lugar"
+                                name="lugar" required>
+                            <div *ngIf="actividadForm.controls['lugar']?.invalid && actividadForm.controls['lugar']?.touched"
+                                class="text-danger">
+                                El lugar es obligatorio.
+                            </div>
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="materialNecesario">Material Necesario</label>
+                            <input type="text" id="materialNecesario" class="form-control"
+                                [(ngModel)]="actividad.materialNecesario" name="materialNecesario">
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="materialOfrecido">Material Ofrecido</label>
+                            <input type="text" id="materialOfrecido" class="form-control"
+                                [(ngModel)]="actividad.materialOfrecido" name="materialOfrecido">
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="tipo">Tipo</label>
+                            <input type="text" id="tipo" class="form-control" [(ngModel)]="actividad.tipo" name="tipo"
+                                required>
+                            <div *ngIf="actividadForm.controls['tipo']?.invalid && actividadForm.controls['tipo']?.touched"
+                                class="text-danger">
+                                El tipo es obligatorio.
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100 mt-3"
+                            [disabled]="actividadForm.invalid || (actividadForm.controls['numMaxParticipantes'] && actividadForm.controls['numMinParticipantes'] && actividadForm.controls['numMaxParticipantes'].value < actividadForm.controls['numMinParticipantes'].value)">
+                            Editar Actividad
+                        </button>
+                        <button type="button" class="btn btn-secondary w-100 mt-3"
+                            (click)="navegateHomeOfertante()">Cancelar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
