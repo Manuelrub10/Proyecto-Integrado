@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Controller
 public class AngularController {
-    @RequestMapping(value = "/***")
-    public String redirect() {
-        return "forward:/static/index.html";
+    @RequestMapping("/")
+    public String index() {
+        return "index.html";
     }
 }
