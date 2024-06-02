@@ -94,7 +94,6 @@ export class ConsumidorPerfilComponent {
               .subscribe({
                 next: (data) => {
                   alert('Reserva realizada con éxito');
-                  window.location.reload(); // Recarga la página después de crear la reserva
                 },
                 error: (error) => {
                   if (error.status === 400) {

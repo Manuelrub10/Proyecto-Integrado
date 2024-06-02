@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { LoginService } from '../../services/login.service';
 import { Router } from '@angular/router';
 import { ActividadService } from '../../services/actividad.service';
@@ -37,6 +37,7 @@ export class HomeOfertanteComponent implements OnInit {
     private actividadService: ActividadService,
     private loginService: LoginService,
     private ofertanteService: OfertanteService,
+    private cdr: ChangeDetectorRef,
     private router: Router
   ) {}
 
@@ -94,10 +95,14 @@ export class HomeOfertanteComponent implements OnInit {
           this.actividades = data.content;
           this.totalPages = data.totalPages;
           this.existActividades = this.actividades.length > 0;
+          // Fuerza la detección de cambios
+          this.cdr.detectChanges();
         },
         // Maneja la respuesta en caso de error
         error: (error) => {
           this.actividades = [];
+          // Fuerza la detección de cambios incluso en caso de error
+          this.cdr.detectChanges();
         },
       });
   }
@@ -107,12 +112,15 @@ export class HomeOfertanteComponent implements OnInit {
    */
   actualizarOfertante(): void {
     const usuarioId = localStorage.getItem('usuarioActualId');
+
     if (usuarioId) {
       const id = Number(usuarioId);
+
       this.loginService.getDetallesUsuario(id).subscribe({
         next: (user) => {
           if (user && user.ofertante && user.ofertante.id) {
             const ofertanteId = user.ofertante.id;
+
             this.ofertanteService
               .editarOfertante(ofertanteId, this.ofertante)
               .subscribe({
@@ -120,10 +128,20 @@ export class HomeOfertanteComponent implements OnInit {
                   this.loginService.actualizarUsuarioActual(response);
                   this.mensaje = 'Se han guardado los cambios correctamente';
                   setTimeout(() => {
-                    window.location.reload();
                     this.mensaje = '';
                   }, 3000);
-                  this.router.navigate(['/home-ofertante']);
+
+                  // Recargar los detalles del usuario y actualizar la vista sin recargar la página
+                  this.loginService.getDetallesUsuario(id).subscribe({
+                    next: (updatedUser) => {
+                      this.ofertante = updatedUser.ofertante;
+                      this.cargarActividades(this.ofertante.id);
+                      this.cdr.detectChanges();
+                    },
+                    error: (error) => {
+                      this.router.navigate(['/login']);
+                    },
+                  });
                 },
                 error: (error) => {
                   alert(
@@ -143,6 +161,61 @@ export class HomeOfertanteComponent implements OnInit {
       this.router.navigate(['/login']);
     }
   }
+  // actualizarOfertante(): void {
+  //   // Obtiene el ID del usuario actual desde el almacenamiento local
+  //   const usuarioId = localStorage.getItem('usuarioActualId');
+
+  //   if (usuarioId) {
+  //     const id = Number(usuarioId);
+
+  //     // Obtiene los detalles del usuario usando el ID
+  //     this.loginService.getDetallesUsuario(id).subscribe({
+  //       next: (user) => {
+  //         // Verifica que el usuario tenga un ofertante válido
+  //         if (user && user.ofertante && user.ofertante.id) {
+  //           const ofertanteId = user.ofertante.id;
+
+  //           // Actualiza los detalles del ofertante
+  //           this.ofertanteService
+  //             .editarOfertante(ofertanteId, this.ofertante)
+  //             .subscribe({
+  //               next: (response) => {
+  //                 // Actualiza la información del usuario actual con la respuesta recibida
+  //                 this.loginService.actualizarUsuarioActual(response);
+
+  //                 // Muestra un mensaje de éxito y lo oculta después de 3 segundos
+  //                 this.mensaje = 'Se han guardado los cambios correctamente';
+  //                 setTimeout(() => {
+  //                   this.mensaje = '';
+  //                 }, 3000);
+
+  //                 // Obtiene de nuevo los detalles del usuario y navega a la página de inicio del ofertante
+  //                 this.loginService.getDetallesUsuario(id).subscribe(() => {
+  //                   this.router.navigate(['/home-ofertante']);
+  //                 });
+  //               },
+  //               error: (error) => {
+  //                 // Muestra un mensaje de error en caso de fallo al actualizar el ofertante
+  //                 alert(
+  //                   'Error al actualizar el ofertante. Por favor, inténtelo de nuevo más tarde.'
+  //                 );
+  //               },
+  //             });
+  //         } else {
+  //           // Si el usuario no tiene un ofertante válido, redirige a la página de login
+  //           this.router.navigate(['/login']);
+  //         }
+  //       },
+  //       error: (error) => {
+  //         // Si falla la obtención de los detalles del usuario, redirige a la página de login
+  //         this.router.navigate(['/login']);
+  //       },
+  //     });
+  //   } else {
+  //     // Si no se encuentra el ID del usuario en el almacenamiento local, redirige a la página de login
+  //     this.router.navigate(['/login']);
+  //   }
+  // }
 
   /**
    * Método para eliminar al ofertante
@@ -208,11 +281,23 @@ export class HomeOfertanteComponent implements OnInit {
     if (confirm('¿Estás seguro de que deseas eliminar esta actividad?')) {
       this.actividadService.eliminarActividad(actividadId).subscribe({
         next: () => {
+          // Eliminar la actividad de la lista local
           this.actividades = this.actividades.filter(
             (a) => a.id !== actividadId
           );
-          this.existActividades = this.actividades.length > 0;
-          window.location.reload(); // Recarga la página
+
+          // Si la página actual está vacía después de la eliminación y no estamos en la primera página,
+          // retrocedemos una página
+          if (this.actividades.length === 0 && this.page > 0) {
+            this.page--;
+          }
+
+          // Recarga los datos de la página llamando a cargarActividades
+          this.cargarActividades(this.ofertante.id);
+          this.mensaje = 'La actividad ha sido eliminada correctamente';
+          setTimeout(() => {
+            this.mensaje = '';
+          }, 3000);
         },
         error: (error) => {
           alert(

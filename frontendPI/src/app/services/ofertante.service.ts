@@ -8,7 +8,7 @@ import { catchError } from 'rxjs/operators';
 })
 export class OfertanteService {
   // URL base de la API de ofertantes
-  private apiUrl = 'http://localhost:8080/api/ofertantes';
+  private apiUrl = 'http://localhost:8081/api/ofertantes';
 
   // Constructor que inyecta el servicio HttpClient
   constructor(private http: HttpClient) {}

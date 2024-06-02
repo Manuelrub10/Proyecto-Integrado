@@ -7,7 +7,7 @@ import { Observable, tap } from 'rxjs';
 })
 export class ReservaService {
   // URL base de la API de reservas
-  private apiUrl = 'http://localhost:8080/api/reservas';
+  private apiUrl = 'http://localhost:8081/api/reservas';
 
   // Constructor que inyecta el servicio HttpClient
   constructor(private http: HttpClient) {}

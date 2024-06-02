@@ -8,7 +8,7 @@ import { BehaviorSubject, Observable, catchError, tap, throwError } from 'rxjs';
 })
 export class LoginService {
   // URL base de la API de usuarios
-  private apiUrl = 'http://localhost:8080/api/usuarios';
+  private apiUrl = 'http://localhost:8081/api/usuarios';
 
   // BehaviorSubject para mantener el estado del usuario actual
   private usuarioActualSubject: BehaviorSubject<any>;

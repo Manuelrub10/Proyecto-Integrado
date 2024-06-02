@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ConsumidorService {
   // URL base de la API de consumidores
-  private apiUrl = 'http://localhost:8080/api/consumidores';
+  private apiUrl = 'http://localhost:8081/api/consumidores';
 
   // Constructor que inyecta el servicio HttpClient
   constructor(private http: HttpClient) {}

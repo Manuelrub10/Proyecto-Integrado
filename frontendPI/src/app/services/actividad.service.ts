@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ActividadService {
   // URL base de la API de actividades
-  private apiUrl = 'http://localhost:8080/api/actividades';
+  private apiUrl = 'http://localhost:8081/api/actividades';
 
   // Constructor que inyecta el servicio HttpClient
   constructor(private http: HttpClient) {}

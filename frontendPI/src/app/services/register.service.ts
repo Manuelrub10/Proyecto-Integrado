@@ -8,7 +8,7 @@ import { catchError } from 'rxjs/operators';
 })
 export class RegisterService {
   // URL base de la API de registro de usuarios
-  private apiUrl = 'http://localhost:8080/api/usuarios/register';
+  private apiUrl = 'http://localhost:8081/api/usuarios/register';
 
   // Constructor que inyecta el servicio HttpClient
   constructor(private http: HttpClient) {}

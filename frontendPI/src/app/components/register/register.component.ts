@@ -53,7 +53,7 @@ export class RegisterComponent {
       // Maneja la respuesta en caso de error
       error: (error) => {
         this.errorMessage =
-          'Error en el registro: ' + (error.error?.message || 'Unknown error');
+          'Error en el registro: El correo electrónico ya está registrado';
       },
     });
   }

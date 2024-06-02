@@ -2,8 +2,10 @@ package com.proyectoIntegradoManuel.pi.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
+/*
+Esta clase se ha implementado para que te redireccion al index.html cuando inicies en el despliegue.
+ */
 @Controller
 public class AngularController {
     @RequestMapping("/")
