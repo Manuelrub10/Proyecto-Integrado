@@ -2,6 +2,7 @@ package com.proyectoIntegradoManuel.pi.controller;
 
 import com.proyectoIntegradoManuel.pi.model.Actividad;
 import com.proyectoIntegradoManuel.pi.model.Ofertante;
+import com.proyectoIntegradoManuel.pi.model.Reserva;
 import com.proyectoIntegradoManuel.pi.model.dto.ActividadDTO;
 import com.proyectoIntegradoManuel.pi.services.ActividadService;
 import com.proyectoIntegradoManuel.pi.services.OfertanteService;
@@ -100,6 +101,9 @@ public class ActividadController {
         // Registrar información sobre la edición de la actividad
         logger.info("Editando actividad con id: {}", id);
 
+
+        List<Reserva> reservas = reservaService.getReservasByActividad(id);
+
         // Buscar la actividad por su ID
         return actividadService.findById(id)
                 .map(actividad -> {
@@ -107,6 +111,8 @@ public class ActividadController {
                     actividad.setTitulo(actividadDTO.getTitulo());
                     actividad.setDescripcion(actividadDTO.getDescripcion());
                     actividad.setDuracion(actividadDTO.getDuracion());
+                    if (actividadDTO.getNumMaxParticipantes()<reservas.size()){
+                        return new ResponseEntity<>("La actividad tiene más de " + actividadDTO.getNumMaxParticipantes() + " participantes inscritos", HttpStatus.BAD_REQUEST);                    }
                     actividad.setNumMinParticipantes(actividadDTO.getNumMinParticipantes());
                     actividad.setNumMaxParticipantes(actividadDTO.getNumMaxParticipantes());
 

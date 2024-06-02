@@ -81,6 +81,14 @@ export class CrearActividadComponent implements OnInit {
       return;
     }
 
+    // Validación de fecha pasada
+    const fechaActividad = new Date(this.actividad.fecha);
+    const now = new Date();
+    if (fechaActividad < now) {
+      alert('La fecha de la actividad no puede ser una fecha pasada.');
+      return;
+    }
+
     // Formatea la fecha de la actividad antes de enviarla al servidor
     const formattedFecha = format(
       new Date(this.actividad.fecha),

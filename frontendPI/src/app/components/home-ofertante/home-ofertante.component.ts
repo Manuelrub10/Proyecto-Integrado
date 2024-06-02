@@ -126,22 +126,12 @@ export class HomeOfertanteComponent implements OnInit {
               .subscribe({
                 next: (response) => {
                   this.loginService.actualizarUsuarioActual(response);
-                  this.mensaje = 'Se han guardado los cambios correctamente';
+                  this.mensaje =
+                    'Se han guardado los cambios correctamente. Aplicando cambios...';
                   setTimeout(() => {
                     this.mensaje = '';
+                    this.reloadComponent();
                   }, 3000);
-
-                  // Recargar los detalles del usuario y actualizar la vista sin recargar la página
-                  this.loginService.getDetallesUsuario(id).subscribe({
-                    next: (updatedUser) => {
-                      this.ofertante = updatedUser.ofertante;
-                      this.cargarActividades(this.ofertante.id);
-                      this.cdr.detectChanges();
-                    },
-                    error: (error) => {
-                      this.router.navigate(['/login']);
-                    },
-                  });
                 },
                 error: (error) => {
                   alert(
@@ -161,61 +151,17 @@ export class HomeOfertanteComponent implements OnInit {
       this.router.navigate(['/login']);
     }
   }
-  // actualizarOfertante(): void {
-  //   // Obtiene el ID del usuario actual desde el almacenamiento local
-  //   const usuarioId = localStorage.getItem('usuarioActualId');
 
-  //   if (usuarioId) {
-  //     const id = Number(usuarioId);
-
-  //     // Obtiene los detalles del usuario usando el ID
-  //     this.loginService.getDetallesUsuario(id).subscribe({
-  //       next: (user) => {
-  //         // Verifica que el usuario tenga un ofertante válido
-  //         if (user && user.ofertante && user.ofertante.id) {
-  //           const ofertanteId = user.ofertante.id;
-
-  //           // Actualiza los detalles del ofertante
-  //           this.ofertanteService
-  //             .editarOfertante(ofertanteId, this.ofertante)
-  //             .subscribe({
-  //               next: (response) => {
-  //                 // Actualiza la información del usuario actual con la respuesta recibida
-  //                 this.loginService.actualizarUsuarioActual(response);
-
-  //                 // Muestra un mensaje de éxito y lo oculta después de 3 segundos
-  //                 this.mensaje = 'Se han guardado los cambios correctamente';
-  //                 setTimeout(() => {
-  //                   this.mensaje = '';
-  //                 }, 3000);
-
-  //                 // Obtiene de nuevo los detalles del usuario y navega a la página de inicio del ofertante
-  //                 this.loginService.getDetallesUsuario(id).subscribe(() => {
-  //                   this.router.navigate(['/home-ofertante']);
-  //                 });
-  //               },
-  //               error: (error) => {
-  //                 // Muestra un mensaje de error en caso de fallo al actualizar el ofertante
-  //                 alert(
-  //                   'Error al actualizar el ofertante. Por favor, inténtelo de nuevo más tarde.'
-  //                 );
-  //               },
-  //             });
-  //         } else {
-  //           // Si el usuario no tiene un ofertante válido, redirige a la página de login
-  //           this.router.navigate(['/login']);
-  //         }
-  //       },
-  //       error: (error) => {
-  //         // Si falla la obtención de los detalles del usuario, redirige a la página de login
-  //         this.router.navigate(['/login']);
-  //       },
-  //     });
-  //   } else {
-  //     // Si no se encuentra el ID del usuario en el almacenamiento local, redirige a la página de login
-  //     this.router.navigate(['/login']);
-  //   }
-  // }
+  /*
+  Este método utiliza this.router.navigateByUrl para navegar a una ruta temporal ('/') con skipLocationChange: true, y luego 
+  navega de vuelta a la ruta actual para forzar la recarga de la vista.
+  */
+  reloadComponent() {
+    const currentUrl = this.router.url;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([currentUrl]);
+    });
+  }
 
   /**
    * Método para eliminar al ofertante

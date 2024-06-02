@@ -113,6 +113,7 @@ export class EditarActividadComponent {
         },
         // Maneja la respuesta en caso de error
         error: (error) => {
+          alert(error.error);
           // Manejo de errores (actualmente vacío)
         },
       });
